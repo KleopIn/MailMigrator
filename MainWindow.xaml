@@ -27,7 +27,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Text="MAIL MIGRATOR" FontSize="22" FontWeight="Bold" Foreground="White"/>
-                        <TextBlock Text="Перенос почты между IMAP-серверами · mail.ru → Exchange" FontSize="13"
+                        <TextBlock Text="Перенос почты между любыми IMAP-серверами" FontSize="13"
                                    Foreground="#BFD3F5" Margin="0,2,0,0"/>
                     </StackPanel>
                     <TextBlock Grid.Column="1" Text="📧" FontSize="30" VerticalAlignment="Center"/>
@@ -39,7 +39,7 @@
                 <StackPanel>
                     <TextBlock Text="КАК ПОЛЬЗОВАТЬСЯ" FontWeight="SemiBold" Foreground="#7FA8FF" Margin="0,0,0,5" FontSize="11"/>
                     <TextBlock TextWrapping="Wrap" Foreground="#B9CCF0" LineHeight="20" FontSize="13"
-                               Text="1. Источник (mail.ru): логин = полный e-mail, пароль = пароль приложения (не основной пароль).&#10;2. Назначение (Exchange): логин = доменная учётка, пароль = доменный пароль.&#10;3. При необходимости задайте период «с…по…» и нажмите «▶ Запустить миграцию».&#10;Пароли шифруются (DPAPI) и хранятся только на этом компьютере."/>
+                               Text="1. Источник: логин = полный e-mail, пароль = пароль приложения (для Gmail, Яндекс Почты и mail.ru создаётся в настройках аккаунта, не основной пароль).&#10;2. Назначение: любой IMAP-сервер, куда переносите почту.&#10;3. При необходимости задайте период «с…по…» и нажмите «▶ Запустить миграцию».&#10;Пароли шифруются (DPAPI) и хранятся только на этом компьютере."/>
                 </StackPanel>
             </Border>
 
@@ -54,7 +54,7 @@
                 <!-- Источник -->
                 <Border Grid.Column="0" Style="{StaticResource Card}">
                     <StackPanel>
-                        <TextBlock Text="ИСТОЧНИК · MAIL.RU" Style="{StaticResource SectionTitle}"/>
+                        <TextBlock Text="ИСТОЧНИК" Style="{StaticResource SectionTitle}"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="150"/>
@@ -85,7 +85,7 @@
                 <!-- Назначение -->
                 <Border Grid.Column="2" Style="{StaticResource Card}">
                     <StackPanel>
-                        <TextBlock Text="НАЗНАЧЕНИЕ · EXCHANGE" Style="{StaticResource SectionTitle}"/>
+                        <TextBlock Text="НАЗНАЧЕНИЕ" Style="{StaticResource SectionTitle}"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="150"/>

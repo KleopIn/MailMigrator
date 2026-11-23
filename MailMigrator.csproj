@@ -9,8 +9,8 @@
     <RootNamespace>MailMigrator</RootNamespace>
     <AssemblyName>MailMigrator</AssemblyName>
     <Version>1.0.0</Version>
-    <Authors>MMZ1</Authors>
-    <Description>IMAP-to-IMAP mailbox migration tool (mail.ru to Exchange)</Description>
+    <Authors>KleopIn</Authors>
+    <Description>Universal IMAP-to-IMAP mailbox migration tool (Gmail, Yandex, mail.ru, Exchange and any IMAP server)</Description>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>app.ico</ApplicationIcon>
     <PublishSingleFile>true</PublishSingleFile>
