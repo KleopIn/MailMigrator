@@ -169,15 +169,16 @@ public sealed class ImapMigrationService
             catch (Exception ex) { Log($"WARN: could not read destination oldest date: {ex.Message}"); }
         }
 
-        // 3) Enumerate source messages (batched summaries).
+        // 3) Enumerate source messages (batched summaries), with retries for
+        //    transient server errors (e.g. mail.ru "Service temporarily unavailable").
         IList<IMessageSummary> summaries;
         try
         {
-            summaries = await srcFolder.FetchAsync(0, -1, SummaryItems, _ct);
+            summaries = await FetchSummariesWithRetryAsync(sc, srcFolder, _ct);
         }
         catch (Exception ex)
         {
-            Log($"ERROR: could not list source folder [{srcFolder.Name}]: {ex.Message}");
+            Log($"ERROR: could not list source folder [{srcFolder.Name}] after retries: {ex.Message}");
             return;
         }
 
@@ -259,6 +260,34 @@ public sealed class ImapMigrationService
         }
 
         Log($"{TimeStamp()}  DONE [{srcFolder.Name}]  copied={_stats.Copied} errors={_stats.Errors} alreadyOnDest={_stats.DupSkipped + _stats.BoundarySkipped} largeSkipped={_stats.LargeSkipped} outOfRange={_stats.DateSkipped}");
+    }
+
+    /// <summary>
+    /// Fetches all source summaries, retrying transient IMAP errors (e.g. mail.ru
+    /// "Service temporarily unavailable") with exponential backoff and reconnect.
+    /// </summary>
+    private async Task<IList<IMessageSummary>> FetchSummariesWithRetryAsync(Conn sc, IMailFolder folder, CancellationToken ct)
+    {
+        const int maxAttempts = 5;
+        Exception? last = null;
+        for (int attempt = 1; attempt <= maxAttempts; attempt++)
+        {
+            try
+            {
+                return await folder.FetchAsync(0, -1, SummaryItems, ct);
+            }
+            catch (OperationCanceledException) { throw; }
+            catch (Exception ex)
+            {
+                last = ex;
+                if (attempt == maxAttempts) break;
+                Log($"  WARN: list [{folder.Name}] failed ({ex.Message}) — retry {attempt}/{maxAttempts - 1}...");
+                try { await sc.EnsureAsync(ct); } catch { }
+                int delayMs = Math.Min(30000, 2000 * (1 << (attempt - 1)));
+                try { await Task.Delay(delayMs, ct); } catch (OperationCanceledException) { throw; }
+            }
+        }
+        throw last!;
     }
 
     private static IMailFolder? FindSentFolder(ImapClient client)
