@@ -1,0 +1,26 @@
+# Сборка и артефакты
+bin/
+obj/
+publish/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Среда разработки
+.vs/
+.idea/
+
+# Публикуемые бинарники (не храним exe в репозитории)
+*.exe
+*.dll
+*.pdb
+
+# Временные/диагностические файлы
+*.log
+*.tmp
+
+# Чувствительные данные — НИКОГДА не коммитим
+users.json
+profile.json
+*.credentials
